@@ -840,10 +840,6 @@ function loadUI()
 		loadUI()
 	end)
 
-	local mDestroy = Misc.AddButton("Destroy", function()
-		MainUI:Destroy()
-	end)
-
 end
 loadUI()
 --[[
