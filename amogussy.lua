@@ -843,10 +843,6 @@ function loadUI()
 		loadUI()
 	end)
 
-	local mDestroy = Misc.AddButton("Destroy", function()
-		MainUI:Destroy()
-	end)
-
 	local mUpdate = Misc.AddButton("Update UI", function()
 		loadstring(game:HttpGet("https://raw.githubusercontent.com/0x00A7AFBC/amogussussysus/main/amogussy.lua"))();
 	end)
