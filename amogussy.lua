@@ -7,6 +7,10 @@ options["Cuffs"] = {}
 options["Self"] = {}
 options["Others"] = {}
 options["Server"] = {}
+options["Car"] = {}
+options.Car["id"] = "8389041427"
+options.Car["pitch"] = 1
+options.Car["volume"] = 10
 
 local UILibrary = loadstring(game:HttpGet("https://raw.githubusercontent.com/0x00A7AFBC/amogussussysus/main/Library.lua"))()
 
@@ -18,6 +22,12 @@ RunService.RenderStepped:Connect(function(step)
 	end
 	if options.Self["nofollow"] then
 		unfollowPlayer(game:GetService("Players").LocalPlayer.Name)
+	end
+end)
+
+game:GetService("Players").LocalPlayer.PlayerGui.ChildAdded:Connect(function(instance)
+	if instance.Name == "A-Chassis Interface" and options.Car["disable script"] then
+		game:GetService("Players").LocalPlayer.PlayerGui["A-Chassis Interface"]["AC6_Sound_Mod"].Disabled = true
 	end
 end)
 
@@ -67,6 +77,17 @@ function getPlayerList()
     for i,v in pairs(game:GetService("Players"):GetChildren()) do
             table.insert(ret, v.Name)
     end
+	return ret
+end
+
+function getCars()
+	ret = {}
+	local players = getPlayerList()
+	for _,v in pairs(players) do
+		if game:GetService("Workspace"):FindFirstChild(v.."Car") or game:GetService("Workspace"):FindFirstChild(v.."'s Car") then
+			table.insert(ret, v.."Car")
+		end
+	end
 	return ret
 end
 
@@ -808,10 +829,13 @@ end
 
 function loadUI()
 
+	local UILibrary = loadstring(game:HttpGet("https://raw.githubusercontent.com/0x00A7AFBC/amogussussysus/main/Library.lua"))()
+
 	local MainUI = UILibrary.Load("Traun RIP v1")
 	local Jail = MainUI.AddPage("Jail")
 	local Cuffs = MainUI.AddPage("Cuffs")
 	local Self = MainUI.AddPage("Self")
+	local Car = MainUI.AddPage("Car")
 	local Server = MainUI.AddPage("Server")
 	local Misc = MainUI.AddPage("Misc")
 
@@ -866,6 +890,155 @@ function loadUI()
 	end)
 	
 	local sGodmode = Self.AddButton("Godmode", enablegod)
+
+	local cPlaysoundVolumeSlider = Car.AddSlider("Volume", {Min = 0, Max = 100, Def = 10}, function(v)
+		options.Car["volume"] = v
+	end) 
+
+	local cPlaysoundPitchSlider = Car.AddSlider("Pitch", {Min = 1, Max = 20, Def = 1}, function(v)
+		options.Car["pitch"] = v
+	end)
+
+	--[[
+	local cTargetCar = Car.AddDropdown("Users car", getCars(), function(v)
+		options.Car["target"] = velocity
+	end)
+	]]--
+
+	local cPlaySoundSetId = Car.AddButton("Set sound id", function()
+		-- Gui to Lua
+-- Version: 3.2
+
+-- Instances:
+
+local Amongussy = Instance.new("ScreenGui")
+local Frame = Instance.new("ImageLabel")
+local TextBox = Instance.new("TextBox")
+local TextLabel = Instance.new("TextLabel")
+local TextButton = Instance.new("TextButton")
+local TextButton_Roundify_12px = Instance.new("ImageLabel")
+local ImageLabel = Instance.new("ImageLabel")
+local TextLabel_2 = Instance.new("TextLabel")
+
+--Properties:
+
+Amongussy.Parent = game.CoreGui
+
+Frame.Name = "Frame"
+Frame.Parent = Amongussy
+Frame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Frame.BackgroundTransparency = 1.000
+Frame.Position = UDim2.new(0.404619932, 0, 0.353558928, 0)
+Frame.Size = UDim2.new(0, 256, 0, 83)
+Frame.Image = "rbxassetid://3570695787"
+Frame.ImageColor3 = Color3.fromRGB(20, 20, 20)
+Frame.ScaleType = Enum.ScaleType.Slice
+Frame.SliceCenter = Rect.new(100, 100, 100, 100)
+Frame.SliceScale = 0.120
+
+TextBox.Parent = Frame
+TextBox.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+TextBox.BorderSizePixel = 0
+TextBox.Position = UDim2.new(0, 0, 0.352869093, 0)
+TextBox.Size = UDim2.new(0, 256, 0, 24)
+TextBox.Font = Enum.Font.SourceSans
+TextBox.PlaceholderText = "sound id"
+TextBox.Text = ""
+TextBox.TextColor3 = Color3.fromRGB(255, 255, 255)
+TextBox.TextSize = 14.000
+
+TextLabel.Parent = Frame
+TextLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+TextLabel.BackgroundTransparency = 1.000
+TextLabel.Size = UDim2.new(0, 256, 0, 26)
+TextLabel.Font = Enum.Font.SourceSans
+TextLabel.Text = "Sound id selector"
+TextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+TextLabel.TextSize = 14.000
+
+TextButton.Parent = Frame
+TextButton.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+TextButton.BackgroundTransparency = 1.000
+TextButton.BorderSizePixel = 0
+TextButton.Position = UDim2.new(0, 0, 0.714314997, 0)
+TextButton.Size = UDim2.new(0, 256, 0, 23)
+TextButton.Font = Enum.Font.SourceSans
+TextButton.Text = "Set id"
+TextButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+TextButton.TextSize = 14.000
+TextButton.MouseButton1Click:Connect(function()
+	if TextBox.Text ~= "" then
+		options.Car["id"] = TextBox.Text
+		game:GetService("CoreGui").ScreenGui:Destroy()
+	end
+	
+end)
+
+TextButton_Roundify_12px.Name = "TextButton_Roundify_12px"
+TextButton_Roundify_12px.Parent = TextButton
+TextButton_Roundify_12px.Active = true
+TextButton_Roundify_12px.AnchorPoint = Vector2.new(0.5, 0.5)
+TextButton_Roundify_12px.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+TextButton_Roundify_12px.BackgroundTransparency = 1.000
+TextButton_Roundify_12px.Position = UDim2.new(0.5, 0, 0.5, 0)
+TextButton_Roundify_12px.Selectable = true
+TextButton_Roundify_12px.Size = UDim2.new(1, 0, 1, 0)
+TextButton_Roundify_12px.Image = "rbxassetid://3570695787"
+TextButton_Roundify_12px.ImageColor3 = Color3.fromRGB(35, 35, 35)
+TextButton_Roundify_12px.ScaleType = Enum.ScaleType.Slice
+TextButton_Roundify_12px.SliceCenter = Rect.new(100, 100, 100, 100)
+TextButton_Roundify_12px.SliceScale = 0.120
+
+ImageLabel.Parent = TextButton
+ImageLabel.BackgroundTransparency = 1.000
+ImageLabel.BorderSizePixel = 0
+ImageLabel.Position = UDim2.new(0.56640625, 0, -0.0838132128, 0)
+ImageLabel.Size = UDim2.new(0, 24, 0, 24)
+ImageLabel.Image = "http://www.roblox.com/asset/?id=6031094667"
+
+TextLabel_2.Parent = TextButton
+TextLabel_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+TextLabel_2.BackgroundTransparency = 1.000
+TextLabel_2.BorderSizePixel = 0
+TextLabel_2.Size = UDim2.new(0, 256, 0, 23)
+TextLabel_2.Font = Enum.Font.SourceSans
+TextLabel_2.Text = "Set id"
+TextLabel_2.TextColor3 = Color3.fromRGB(255, 255, 255)
+TextLabel_2.TextSize = 14.000
+	end)
+
+	local cPlaySoundPlay = Car.AddButton("Play sound", function()
+		local ohString1 = "updateSound"
+		local ohString2 = "Rev"
+		local ohString3 = "rbxassetid://"..options.Car["id"]
+		local ohNumber4 = options.Car["pitch"]
+		local ohNumber5 = options.Car["volume"]
+		car = game:GetService("Players").LocalPlayer.Name.."Car"
+
+		workspace[car].AC6_FE_Sounds:FireServer(ohString1, ohString2, ohString3, ohNumber4, ohNumber5)
+	end)
+
+	local cDisableSoundScript = Car.AddToggle("Disable car sound script", false, function(v)
+		options.Car["disable script"] = v
+		if v == false then
+			--game:GetService("Players").PlayerGui["A-Chassis Interface"]["AC6_Sound_Mod"].Disabled = true
+			if game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("A-Chassis Interface") then
+				game:GetService("Players").LocalPlayer.PlayerGui["A-Chassis Interface"]["AC6_Sound_Mod"].Disabled = false
+			end
+		elseif v == true then
+			if game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("A-Chassis Interface") then
+				game:GetService("Players").LocalPlayer.PlayerGui["A-Chassis Interface"]["AC6_Sound_Mod"].Disabled = true
+			end
+		end
+	end)
+
+	local cOpenCarSpawnerMenu = Car.AddButton("Open civi spawn menu", function()
+		fireclickdetector(game:GetService("Workspace")["Car spawner"]["Car spwaner Bürger"].GuiThing.ClickDetector)
+	end)
+
+	local cOpenCarSpawnerMenu = Car.AddButton("Open cop spawn menu", function()
+		fireclickdetector(game:GetService("Workspace")["Car spawner"]["Car spwaner Polizei"].GuiThing.ClickDetector)
+	end)
 
 	local mReload = Misc.AddButton("Reload", function() 
 		loadUI()
