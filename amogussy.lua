@@ -5,6 +5,8 @@ local options = env.options
 options["Jail"] = {}
 options["Cuffs"] = {}
 options["Self"] = {}
+options["Others"] = {}
+options["Server"] = {}
 
 local UILibrary = loadstring(game:HttpGet("https://raw.githubusercontent.com/0x00A7AFBC/amogussussysus/main/Library.lua"))()
 
@@ -18,6 +20,13 @@ RunService.RenderStepped:Connect(function(step)
 		unfollowPlayer(game:GetService("Players").LocalPlayer.Name)
 	end
 end)
+
+local weapons = {}
+weapons["Glock 19"] = 11
+weapons["Glock 17"] = 10
+weapons["AUG A3"] = 2
+weapons["Taser"] = 7
+
 
 --[[
 function updateDropdown(t, n, newOptions)
@@ -33,7 +42,25 @@ function updateDropdown(t, n, newOptions)
 end
 ]]--
 
-local s = "while true do "
+--game:GetService(\"Players\").LocalPlayer.Backpack.USP.ShellDrop:FireServer(game:GetService(\"Players\").LocalPlayer.Character );
+
+local s = "while true do game:GetService(\"Players\").LocalPlayer.Character.USP.ShellDrop:FireServer(game:GetService(\"Players\").LocalPlayer.Character ); wait(); end"
+
+function giveWeapon(wi)
+	local t = 0
+
+	for i,v in pairs(game.workspace.Polizei:GetChildren()) do
+	
+		if v.Name == "Tool-Giver" then
+	
+			t = t+1
+
+			if t == wi then
+				fireclickdetector(v.Part.ClickDetector)
+			end
+		end
+	end
+end
 
 function getPlayerList()
     ret = {}
@@ -785,6 +812,7 @@ function loadUI()
 	local Jail = MainUI.AddPage("Jail")
 	local Cuffs = MainUI.AddPage("Cuffs")
 	local Self = MainUI.AddPage("Self")
+	local Server = MainUI.AddPage("Server")
 	local Misc = MainUI.AddPage("Misc")
 
 	local jPlayerSelector = Jail.AddDropdown("Player", getPlayerList(), function(v)
@@ -843,10 +871,71 @@ function loadUI()
 		loadUI()
 	end)
 
+	local sWeaponLabel = Self.AddLabel("--- Weapon giver ---")
+
+	local sWeaponSelector = Self.AddDropdown("Weapon", {"USP", "Glock 17", "Glock 19", "AUG A3", "Taser"}, function(v)
+		options.Self["weapon"] = v
+	end)
+
+	local sGive = Self.AddButton("Give weapon", function()
+		local weapon = options.Self["weapon"]
+
+		if weapon == "USP" then
+			fireclickdetector(game.workspace.idk["Tool-Giver"].Part.ClickDetector)
+		elseif weapon == "Glock 17" then
+			giveWeapon(weapons[weapon])
+		elseif weapon == "Glock 19" then
+			giveWeapon(weapons[weapon])
+		elseif weapon == "AUG A3" then
+			giveWeapon(weapons[weapon])
+		elseif weapon == "Taser" then
+			giveWeapon(weapons[weapon])
+		end
+	end)
+
+	local sGiveAll = Self.AddButton("Give all weapons", function()
+		giveWeapon(weapons["Glock 17"])
+		giveWeapon(weapons["Glock 19"])
+		giveWeapon(weapons["AUG A3"])
+		giveWeapon(weapons["Taser"])
+		fireclickdetector(game.workspace.idk["Tool-Giver"].Part.ClickDetector)
+	end)
+
 	local mUpdate = Misc.AddButton("Update UI", function()
 		loadstring(game:HttpGet("https://raw.githubusercontent.com/0x00A7AFBC/amogussussysus/main/amogussy.lua"))();
 	end)
 
+	local jInfoLabel = Jail.AddLabel("0 = infinite")
+
+	local sJailTime = Server.AddSlider("Time", {Min = 0, Max = 1000, Def = 60}, function(v)
+		options.Server["time"] = v
+	end)
+
+	local sJailAll = Server.AddButton("Jail all", function()
+		for _,v in pairs(getPlayerList()) do
+			game:GetService("ReplicatedStorage").CarbonEvents.ToJail:FireServer(v, options.Server["time"])
+		end
+	end)
+
+	local sCLabel = Server.AddLabel("Click multible times to crash server and wait")
+
+	local sCrash = Server.AddButton("Crash", function()
+		fireclickdetector(game.workspace.idk["Tool-Giver"].Part.ClickDetector)
+		local lPlayer = game:GetService("Players").LocalPlayer
+		local char = lPlayer.Character
+		local Humanoid
+
+		if char  then
+			Humanoid = char:FindFirstChild("Humanoid")
+		end
+
+		wait(2)
+
+		Humanoid:EquipTool(game:GetService("Players").LocalPlayer.Backpack.USP)
+
+		
+		loadstring(s)()
+	end)
 end
 loadUI()
 --[[
