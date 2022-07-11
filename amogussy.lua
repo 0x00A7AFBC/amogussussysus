@@ -1084,7 +1084,7 @@ TextLabel_2.TextSize = 14.000
 		loadstring(game:HttpGet("https://raw.githubusercontent.com/0x00A7AFBC/amogussussysus/main/amogussy.lua"))();
 	end)
 
-	local jInfoLabel = Jail.AddLabel("0 = infinite")
+	local jInfoLabel = Server.AddLabel("0 = infinite")
 
 	local sJailTime = Server.AddSlider("Time", {Min = 0, Max = 1000, Def = 60}, function(v)
 		options.Server["time"] = v
@@ -1092,7 +1092,9 @@ TextLabel_2.TextSize = 14.000
 
 	local sJailAll = Server.AddButton("Jail all", function()
 		for _,v in pairs(getPlayerList()) do
-			game:GetService("ReplicatedStorage").CarbonEvents.ToJail:FireServer(v, options.Server["time"])
+			--if v ~= game:GetService("Players").LocalPlayer.Name then
+				game:GetService("ReplicatedStorage").CarbonEvents.ToJail:FireServer(v, options.Server["time"])
+			--end
 		end
 	end)
 
