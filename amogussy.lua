@@ -836,8 +836,10 @@ function loadUI()
 	local Cuffs = MainUI.AddPage("Cuffs")
 	local Self = MainUI.AddPage("Self")
 	local Car = MainUI.AddPage("Car")
+	local Map = MainUI.AddPage("Map")
 	local Server = MainUI.AddPage("Server")
 	local Misc = MainUI.AddPage("Misc")
+	local Info = MainUI.AddPage("Info")
 
 	local jPlayerSelector = Jail.AddDropdown("Player", getPlayerList(), function(v)
 		options.Jail["player"] = v
@@ -1040,6 +1042,10 @@ TextLabel_2.TextSize = 14.000
 		fireclickdetector(game:GetService("Workspace")["Car spawner"]["Car spwaner Polizei"].GuiThing.ClickDetector)
 	end)
 
+	local mOpenPoliceGate = Map.AddButton("Toggle police gate", function()
+		fireclickdetector(game:GetService("Workspace").Polizei["Polizei Wache"]["Polizeiwache "]["Parking Gate"].HingeGroup.Trigger.ClickDetector)
+	end)
+
 	local mReload = Misc.AddButton("Reload", function() 
 		loadUI()
 	end)
@@ -1109,6 +1115,12 @@ TextLabel_2.TextSize = 14.000
 		
 		loadstring(s)()
 	end)
+
+	local iLabel = Info.AddLabel("Made with love by SkidHub")
+	local iLabel2 = Info.AddLabel("Dev: Genycs")
+	local iLabel3 = Info.AddLabel("SkidHub forever")
+	local iLabel4 = Info.AddLabel("TAKE MY CUMSHOT")
+
 end
 loadUI()
 --[[
